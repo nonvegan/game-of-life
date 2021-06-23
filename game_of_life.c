@@ -32,14 +32,9 @@ void print_2d_array(int *arr,int m,int n)
 
 void draw_grid(SDL_Renderer *renderer, int *arr)
 {	
+	SDL_SetRenderDrawColor(renderer,40, 44, 52,255);
+	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer,249, 38, 114,255);
-
-	/* for (int i = 1; i < COLS; i++) 
-		SDL_RenderDrawLine(renderer,i * WIDTH/COLS,0,i * WIDTH/COLS,HEIGHT);
-
-	for(int j = 1; j < ROWS; j++)
-		SDL_RenderDrawLine(renderer,0, j * HEIGHT/ROWS, WIDTH, j * HEIGHT/ROWS); */
-
 	for (int i = 0; i < COLS; i++)
 		for (int j = 0;j < ROWS; j++) 
 			if(*(arr + COLS * j + i)) {
@@ -115,10 +110,9 @@ int main (int argc, char* argv[])
 				quit = 1;
 			if (e.type == SDL_MOUSEBUTTONDOWN)
 				random_binary_fill_2d_array((int *)grid,COLS,ROWS,START_PERCENT);
-		}	
+		}
+
 		if((SDL_GetTicks() - t0) >= DELAY_MS) {
-			SDL_SetRenderDrawColor(renderer,40, 44, 52,255);
-			SDL_RenderClear(renderer);
 			draw_grid(renderer,(int *)grid);	
 			update_grid((int *)grid, (int *)grid_buffer);
 			SDL_RenderPresent(renderer);
