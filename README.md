@@ -1,6 +1,9 @@
 # Conway's Game of Life
 
 [WikiPedia](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+
+![Game of life gif](/game-of-life.gif)
+
 ## Getting started
 
 ```

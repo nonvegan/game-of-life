@@ -4,9 +4,9 @@
 
 #define WIDTH 800
 #define HEIGHT 800
-#define COLS 40
-#define ROWS 40
-#define FPS 5
+#define COLS 50
+#define ROWS 50
+#define FPS 10
 #define DELAY_MS (1000/FPS)
 #define START_PERCENT 20
 
@@ -32,7 +32,7 @@ void print_2d_array(int *arr,int m,int n)
 
 void draw_grid(SDL_Renderer *renderer, int *arr)
 {	
-	SDL_SetRenderDrawColor(renderer,0,0,0,255);
+	SDL_SetRenderDrawColor(renderer,249, 38, 114,255);
 /*
 	for (int i = 1; i < COLS; i++) 
 		SDL_RenderDrawLine(renderer,i * WIDTH/COLS,0,i * WIDTH/COLS,HEIGHT);
@@ -117,7 +117,7 @@ int main (int argc, char* argv[])
 				random_fill_2d_array((int *)grid,COLS,ROWS,1);
 		}	
 		if((SDL_GetTicks() - t0) >= DELAY_MS) {
-			SDL_SetRenderDrawColor(renderer,255,255,255,255);
+			SDL_SetRenderDrawColor(renderer,40, 44, 52,255);
 			SDL_RenderClear(renderer);
 			draw_grid(renderer,(int *)grid);	
 			update_grid((int *)grid, (int *)grid_buffer);
