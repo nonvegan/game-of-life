@@ -10,11 +10,11 @@
 #define DELAY_MS (1000/FPS)
 #define START_PERCENT 20
 
-void random_fill_2d_array(int *arr,int m,int n, int x)
+void random_binary_fill_2d_array(int *arr,int m,int n, int p_fill)
 {
     for (int i = 0; i < m; i++)
       for (int j = 0; j < n; j++)
-	if(START_PERCENT > rand() % 100) {
+	if(p_fill > rand() % 100) {
 		*(arr + m * j + i) = 1;
 	} else {
 		*(arr + m * j + i) = 0;
@@ -33,13 +33,13 @@ void print_2d_array(int *arr,int m,int n)
 void draw_grid(SDL_Renderer *renderer, int *arr)
 {	
 	SDL_SetRenderDrawColor(renderer,249, 38, 114,255);
-/*
-	for (int i = 1; i < COLS; i++) 
+
+	/* for (int i = 1; i < COLS; i++) 
 		SDL_RenderDrawLine(renderer,i * WIDTH/COLS,0,i * WIDTH/COLS,HEIGHT);
 
 	for(int j = 1; j < ROWS; j++)
-		SDL_RenderDrawLine(renderer,0, j * HEIGHT/ROWS, WIDTH, j * HEIGHT/ROWS);
-*/
+		SDL_RenderDrawLine(renderer,0, j * HEIGHT/ROWS, WIDTH, j * HEIGHT/ROWS); */
+
 	for (int i = 0; i < COLS; i++)
 		for (int j = 0;j < ROWS; j++) 
 			if(*(arr + COLS * j + i)) {
@@ -104,9 +104,9 @@ int main (int argc, char* argv[])
 	int grid[WIDTH][HEIGHT];
 	int grid_buffer[WIDTH][HEIGHT];
 	srand(time(NULL));
-	random_fill_2d_array((int *)grid,COLS,ROWS,1);	
+	random_binary_fill_2d_array((int *)grid,COLS,ROWS,START_PERCENT);	
 
-	int t0 = (int)SDL_GetTicks()-DELAY_MS;
+	int t0 = (int)SDL_GetTicks() - DELAY_MS;
 	int quit = 0;
 	while(!quit) {
 		SDL_Event e;
@@ -114,7 +114,7 @@ int main (int argc, char* argv[])
 			if (e.type == SDL_QUIT)
 				quit = 1;
 			if (e.type == SDL_MOUSEBUTTONDOWN)
-				random_fill_2d_array((int *)grid,COLS,ROWS,1);
+				random_binary_fill_2d_array((int *)grid,COLS,ROWS,START_PERCENT);
 		}	
 		if((SDL_GetTicks() - t0) >= DELAY_MS) {
 			SDL_SetRenderDrawColor(renderer,40, 44, 52,255);
