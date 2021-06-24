@@ -4,8 +4,8 @@
 
 #define WIDTH 800
 #define HEIGHT 800
-#define COLS 50
-#define ROWS 50 
+#define COLS 100
+#define ROWS 100
 #define COL_WIDTH (WIDTH/COLS)
 #define ROW_HEIGHT (HEIGHT/ROWS)
 #define FPS 15
