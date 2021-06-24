@@ -109,7 +109,7 @@ int main (int argc, char* argv[])
 	
 	while(!quit) {
 		SDL_Event e;
-		while(SDL_PollEvent(&e))
+		while(SDL_PollEvent(&e)) {
 		       switch(e.type) {
 				case SDL_QUIT:
 			 		quit =1;
@@ -121,6 +121,9 @@ int main (int argc, char* argv[])
 							break;	
 						case SDLK_r:
 							random_binary_fill_2d_array(grid,COLS,ROWS,START_PERCENT);
+							break;
+						case SDLK_k:
+							random_binary_fill_2d_array(grid,COLS,ROWS,0);
 							break;
 					}
 				case SDL_MOUSEBUTTONDOWN:
@@ -134,6 +137,8 @@ int main (int argc, char* argv[])
 					}
 				break;
 			}
+		}
+
 		if((SDL_GetTicks() - t0) >= DELAY_MS) {
 			draw_grid(renderer, grid);	
 			if(!paused) update_grid(grid, grid_buffer);

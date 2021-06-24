@@ -11,4 +11,10 @@ $ sudo apt-get install libsdl2-dev
 $ make
 $ ./game-of-life
 ```
+### Keybinds
 
+`Left-Mouse`: Spawn Cell
+`Right-Mouse`: Kill Cell
+`Spacebar`: Pause
+`R`: Reset
+`K`: Kill all cells
