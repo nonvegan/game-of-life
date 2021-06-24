@@ -5,20 +5,22 @@
 #define WIDTH 800
 #define HEIGHT 800
 #define COLS 50
-#define ROWS 50
-#define FPS 10
+#define ROWS 50 
+#define COL_WIDTH (WIDTH/COLS)
+#define ROW_HEIGHT (HEIGHT/ROWS)
+#define FPS 15
 #define DELAY_MS (1000/FPS)
 #define START_PERCENT 20
 
 void random_binary_fill_2d_array(int *arr,int m,int n, int p_fill)
 {
-    for (int i = 0; i < m; i++)
-      for (int j = 0; j < n; j++)
-	if(p_fill > rand() % 100) {
-		*(arr + m * j + i) = 1;
-	} else {
-		*(arr + m * j + i) = 0;
-	}
+	for (int i = 0; i < m; i++)
+		for (int j = 0; j < n; j++)
+	    		if(p_fill > rand() % 100) {
+	      			*(arr + m * j + i) = 1;
+			} else {
+				*(arr + m * j + i) = 0;
+			}
 } 
 
 void print_2d_array(int *arr,int m,int n)
@@ -88,7 +90,7 @@ int main (int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 
-	SDL_Renderer *renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	SDL_Renderer *renderer = SDL_CreateRenderer(window,-1,SDL_RENDERER_ACCELERATED);
 
 	if (renderer == NULL) {
 		SDL_DestroyWindow(window);
@@ -96,25 +98,45 @@ int main (int argc, char* argv[])
 		return EXIT_FAILURE;
     	}
 	
-	int grid[WIDTH][HEIGHT];
-	int grid_buffer[WIDTH][HEIGHT];
-	srand(time(NULL));
-	random_binary_fill_2d_array((int *)grid,COLS,ROWS,START_PERCENT);	
-
+	int grid[WIDTH * HEIGHT];
+	int grid_buffer[WIDTH * HEIGHT];	
 	int t0 = (int)SDL_GetTicks() - DELAY_MS;
 	int quit = 0;
+	int paused = 0;
+
+	srand(time(NULL));
+	random_binary_fill_2d_array(grid,COLS,ROWS,START_PERCENT);
+	
 	while(!quit) {
 		SDL_Event e;
-		while(SDL_PollEvent(&e)) {
-			if (e.type == SDL_QUIT)
-				quit = 1;
-			if (e.type == SDL_MOUSEBUTTONDOWN)
-				random_binary_fill_2d_array((int *)grid,COLS,ROWS,START_PERCENT);
-		}
-
+		while(SDL_PollEvent(&e))
+		       switch(e.type) {
+				case SDL_QUIT:
+			 		quit =1;
+					break;		
+				case SDL_KEYDOWN:
+					switch(e.key.keysym.sym) {
+						case SDLK_SPACE:
+							paused ^= 1;
+							break;	
+						case SDLK_r:
+							random_binary_fill_2d_array(grid,COLS,ROWS,START_PERCENT);
+							break;
+					}
+				case SDL_MOUSEBUTTONDOWN:
+					switch(e.button.button){
+						case SDL_BUTTON_LEFT:
+							grid[e.button.x/COL_WIDTH+e.button.y/ROW_HEIGHT * COLS]=1;
+							break;
+						case SDL_BUTTON_RIGHT: 
+							grid[e.button.x/COL_WIDTH+e.button.y/ROW_HEIGHT * COLS]=0;
+							break;
+					}
+				break;
+			}
 		if((SDL_GetTicks() - t0) >= DELAY_MS) {
-			draw_grid(renderer,(int *)grid);	
-			update_grid((int *)grid, (int *)grid_buffer);
+			draw_grid(renderer, grid);	
+			if(!paused) update_grid(grid, grid_buffer);
 			SDL_RenderPresent(renderer);
 			t0 = SDL_GetTicks();
 		}
